@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YouTube Shorts Generator 🎬
 
-## Getting Started
+AI가 자동으로 유튜브 쇼츠 영상을 생성하는 웹 애플리케이션입니다.
 
-First, run the development server:
+주제를 입력하면 AI가 자동으로:
+- 📚 주제 조사
+- ✍️ 대본 생성 (4개 섹션)
+- 🎨 이미지 생성 (Imagen 4.0, 9:16 비율)
+- 🎙️ 음성 생성 (OpenAI TTS)
+- 🎬 비디오 조립
+
+## 기술 스택
+
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Components**: shadcn/ui
+- **State Management**: Zustand
+- **Testing**: Playwright (E2E)
+
+## 시작하기
+
+### 필수 조건
+
+- Node.js 20+
+- npm 또는 yarn
+
+### 설치
 
 ```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 시작
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 [http://localhost:3000](http://localhost:3000) 열기
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 프로젝트 구조
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+frontend/
+├── app/                    # Next.js App Router
+│   ├── page.tsx           # 메인 페이지
+│   ├── layout.tsx         # 레이아웃
+│   └── globals.css        # 전역 스타일
+├── components/            # React 컴포넌트
+│   ├── TopicInput.tsx     # 주제 입력
+│   ├── OptionsPanel.tsx   # 생성 옵션
+│   ├── ProgressModal.tsx  # 진행 상황 모달
+│   ├── ResultPage.tsx     # 결과 페이지
+│   └── ui/               # shadcn/ui 컴포넌트
+├── lib/                   # 유틸리티 및 설정
+│   ├── types.ts          # TypeScript 타입
+│   ├── store.ts          # Zustand 스토어
+│   └── utils.ts          # 유틸리티 함수
+└── e2e/                  # E2E 테스트
+    └── example.spec.ts   # Playwright 테스트
+```
 
-## Learn More
+## 사용 가능한 스크립트
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# 개발
+npm run dev           # 개발 서버 시작
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 빌드
+npm run build         # 프로덕션 빌드
+npm start            # 프로덕션 서버 시작
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 테스트
+npm run test:e2e          # E2E 테스트 실행
+npm run test:e2e:ui       # UI 모드로 테스트
+npm run test:e2e:headed   # 헤디드 모드로 테스트
+npm run test:e2e:debug    # 디버그 모드
 
-## Deploy on Vercel
+# 코드 검사
+npm run lint           # ESLint 실행
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 환경 변수
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`.env.local` 파일을 생성하고 다음 변수를 설정하세요:
+
+```env
+# API Keys (백엔드 연결 시 필요)
+NEXT_PUBLIC_API_URL=http://localhost:8000
+GEMINI_API_KEY=your_gemini_api_key
+OPENAI_API_KEY=your_openai_api_key
+```
+
+## Vercel 배포
+
+### 1. GitHub에 푸시
+
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
+
+### 2. Vercel에 배포
+
+1. [Vercel](https://vercel.com/new) 접속
+2. GitHub 리포지토리 import
+3. 프로젝트 설정 확인
+4. Deploy 클릭
+
+### 3. 환경 변수 설정
+
+Vercel 대시보드에서 환경 변수 추가:
+- `NEXT_PUBLIC_API_URL`
+- `GEMINI_API_KEY`
+- `OPENAI_API_KEY`
+
+### 4. 자동 배포
+
+main 브랜치에 푸시하면 자동으로 배포됩니다.
+
+## 기능
+
+- ✅ 주제 입력 및 예시 주제 선택
+- ✅ 음성 목소리 선택 (6종)
+- ✅ 영상 속도 조절 (0.5x - 1.5x)
+- ✅ 화면 비율 선택 (9:16, 1:1, 16:9)
+- ✅ 자막 추가 옵션
+- ✅ 실시간 진행 상황 표시
+- ✅ 비디오 미리보기
+- ✅ 다운로드 기능
+
+## TODO
+
+- [ ] 백엔드 API 연결
+- [ ] 유튜브 업로드 기능
+- [ ] 대본 편집 기능
+- [ ] 템플릿 라이브러리
+- [ ] 생성 히스토리
+
+## 라이선스
+
+MIT
