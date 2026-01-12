@@ -6,15 +6,63 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Film, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
 export function TopicInput() {
-  const { topic, setTopic, startGeneration } = useGenerationStore();
+  const { topic, setTopic, startGeneration, options, setCurrentStep, updateProgressStep, setResult } = useGenerationStore();
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleGenerate = () => {
-    if (topic.trim()) {
-      startGeneration();
-      // API call will be handled by parent
-      window.dispatchEvent(new CustomEvent('start-generation', { detail: { topic } }));
+  const handleGenerate = async () => {
+    if (!topic.trim() || isGenerating) return;
+
+    setIsGenerating(true);
+    startGeneration();
+
+    try {
+      // 생성 요청 보내기
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic,
+          options,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to start generation');
+      }
+
+      const { job_id } = await response.json();
+
+      // 주기적으로 상태 확인
+      const pollInterval = setInterval(async () => {
+        try {
+          const statusResponse = await fetch(`/api/generate?job_id=${job_id}`);
+          const statusData = await statusResponse.json();
+
+          if (statusData.status === 'completed') {
+            clearInterval(pollInterval);
+            setIsGenerating(false);
+            setResult(statusData.result);
+            setCurrentStep('completed');
+          } else if (statusData.status === 'error') {
+            clearInterval(pollInterval);
+            setIsGenerating(false);
+            alert('생성 중 오류가 발생했습니다: ' + (statusData.error || '알 수 없는 오류'));
+          }
+          // 계속 진행 중이면 계속 폴링
+        } catch (error) {
+          console.error('Status check error:', error);
+        }
+      }, 2000); // 2초마다 상태 확인
+
+    } catch (error) {
+      console.error('Generation error:', error);
+      setIsGenerating(false);
+      alert('생성 시작 중 오류가 발생했습니다');
     }
   };
 
@@ -55,7 +103,7 @@ export function TopicInput() {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             className="min-h-[120px] resize-none text-base"
-            disabled={useGenerationStore.getState().isGenerating}
+            disabled={isGenerating}
           />
         </div>
 
@@ -70,6 +118,7 @@ export function TopicInput() {
                   key={index}
                   onClick={() => handleSelectExample(example)}
                   className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all"
+                  disabled={isGenerating}
                 >
                   {example}
                 </button>
@@ -80,12 +129,12 @@ export function TopicInput() {
 
         <Button
           onClick={handleGenerate}
-          disabled={!topic.trim() || useGenerationStore.getState().isGenerating}
+          disabled={!topic.trim() || isGenerating}
           className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-6 text-base transition-all"
           size="lg"
         >
           <Sparkles className="w-5 h-5 mr-2" />
-          쇼츠 생성하기
+          {isGenerating ? '생성 중...' : '쇼츠 생성하기'}
         </Button>
       </div>
     </Card>
