@@ -1,0 +1,110 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - banner:
+      - generic:
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=1]: YouTube Shorts Generator
+            - paragraph: AI가 자동으로 쇼츠 영상을 만들어드립니다
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - img
+                - generic:
+                  - heading [level=2]: 유튜브 쇼츠 생성기
+                  - paragraph: 주제를 입력하면 AI가 자동으로 쇼츠 영상을 만들어줍니다
+              - generic:
+                - generic: 주제 입력
+                - textbox [disabled]:
+                  - /placeholder: "예: 전자레인지에 이것 넣으면 위험한 이유"
+                  - text: 테스트 주제
+              - button [disabled]:
+                - img
+                - text: 생성 중...
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+                - heading [level=3]: 생성 옵션
+              - generic:
+                - generic:
+                  - img
+                  - generic: 음성 목소리
+                - combobox [disabled]:
+                  - generic:
+                    - generic:
+                      - generic: Alloy
+                      - generic: 중립적이고 깔끔한 목소리
+                  - img
+              - generic:
+                - generic:
+                  - img
+                  - generic: 영상 속도
+                - combobox [disabled]:
+                  - generic: 1.0x (보통)
+                  - img
+              - generic:
+                - generic:
+                  - img
+                  - generic: 화면 비율
+                - combobox [disabled]:
+                  - generic: 9:16 (세로형)
+                  - img
+              - generic:
+                - generic:
+                  - img
+                  - generic: 자막 추가
+                - switch [disabled]
+    - contentinfo:
+      - generic:
+        - generic:
+          - paragraph: Powered by AI • Gemini, OpenAI TTS, Imagen 4.0
+          - paragraph: © 2025 YouTube Shorts Generator
+  - button "Open Next.js Dev Tools" [ref=e6] [cursor=pointer]:
+    - img [ref=e7]
+  - alert
+  - dialog "🎬 영상 생성 중..." [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "🎬 영상 생성 중..." [level=2] [ref=e15]
+        - paragraph [ref=e16]: AI가 주제를 분석하여 최적의 쇼츠 영상을 생성하고 있습니다
+      - button [active] [ref=e17]:
+        - img
+    - generic [ref=e18]:
+      - generic [ref=e21]:
+        - img [ref=e23]
+        - generic [ref=e26]:
+          - paragraph [ref=e27]: 1. 주제 조사
+          - paragraph [ref=e28]: 주제에 대한 정보를 수집 중입니다
+      - generic [ref=e31]:
+        - img [ref=e33]
+        - generic [ref=e36]:
+          - paragraph [ref=e37]: 2. 대본 생성
+          - paragraph [ref=e38]: 4개 섹션으로 구성된 대본 작성 중
+      - generic [ref=e41]:
+        - img [ref=e43]
+        - generic [ref=e46]:
+          - paragraph [ref=e47]: 3. 이미지 생성
+          - paragraph [ref=e48]: AI가 이미지를 생성 중입니다
+      - generic [ref=e51]:
+        - img [ref=e53]
+        - generic [ref=e56]:
+          - paragraph [ref=e57]: 4. 음성 생성
+          - paragraph [ref=e58]: TTS로 음성을 생성 중입니다
+      - generic [ref=e61]:
+        - img [ref=e63]
+        - generic [ref=e66]:
+          - paragraph [ref=e67]: 5. 비디오 조립
+          - paragraph [ref=e68]: 최종 비디오를 조립 중입니다
+    - button "취소하기" [ref=e70]
+```
